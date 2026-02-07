@@ -7,16 +7,18 @@
     <style>
         /* --- ESTILOS BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Garamond', serif;
             background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
             color: #e0d5b0;
-            line-height: 1.8;
+            line-height: 1.6;
             position: relative;
             overflow-x: hidden;
-            font-size: 18px;
+            font-size: clamp(14px, 2vw, 18px); /* Texto base escalable */
             min-height: 100vh;
         }
+
         /* Fondo Estelar */
         body::before {
             content: '';
@@ -33,62 +35,108 @@
             opacity: 0.6;
             animation: twinkle 10s infinite alternate;
             z-index: 0;
+            pointer-events: none;
         }
         @keyframes twinkle { from { opacity: 0.4; } to { opacity: 0.8; } }
 
+        img { max-width: 100%; height: auto; display: block; }
+
         /* Header */
-        .header { padding: 5rem 2rem; text-align: center; position: relative; z-index: 2; }
+        .header { 
+            padding: clamp(2rem, 5vw, 5rem) 1rem; 
+            text-align: center; 
+            position: relative; 
+            z-index: 2; 
+        }
+        
         .nameplate {
             display: inline-block;
             background: rgba(5, 10, 20, 0.85);
-            padding: 2.5rem 5rem;
+            padding: clamp(1rem, 3vw, 2.5rem) clamp(2rem, 5vw, 5rem);
             border: 2px solid #b8860b;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(184, 134, 11, 0.3);
             position: relative;
             border-radius: 4px;
         }
+        
         .nameplate::before, .nameplate::after { content: '✦'; position: absolute; color: #ffd700; font-size: 1.2rem; }
-        .nameplate::before { top: 10px; left: 10px; }
-        .nameplate::after { bottom: 10px; right: 10px; }
+        .nameplate::before { top: 5px; left: 5px; }
+        .nameplate::after { bottom: 5px; right: 5px; }
+        
         .header h1 {
-            font-size: 4.5rem;
+            font-size: clamp(1.8rem, 6vw, 4.5rem); 
             background: linear-gradient(to bottom, #fff9e6, #ffd700, #b8860b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            letter-spacing: 8px;
+            letter-spacing: clamp(2px, 1vw, 8px);
             text-transform: uppercase;
             margin-bottom: 0.5rem;
+            line-height: 1.1;
         }
-        .header p { font-size: 1.4rem; color: #a89968; font-style: italic; letter-spacing: 2px; }
+        
+        .header p { 
+            font-size: clamp(0.9rem, 2vw, 1.4rem);
+            color: #a89968; 
+            font-style: italic; 
+            letter-spacing: 2px; 
+        }
 
-        /* Navegación */
-        .nav { display: flex; justify-content: center; gap: 2rem; padding: 2rem; position: relative; z-index: 2; }
+        /* Navegación - CENTRADA Y COMPACTA */
+        .nav { 
+            display: flex; 
+            justify-content: center; /* Centrado en el medio */
+            gap: clamp(0.5rem, 2vw, 2rem); 
+            padding: 0 1rem 2rem 1rem; 
+            position: relative; 
+            z-index: 2; 
+            flex-wrap: nowrap; /* Mantiene una sola línea */
+        }
+        
         .nav button {
             background: rgba(20, 30, 48, 0.6);
             color: #d4c5a0;
             border: 1px solid #4a5d7e;
-            padding: 1rem 3rem;
-            font-size: 1.2rem;
+            
+            /* Padding adaptable: se hace pequeño en móvil pero mantiene proporción */
+            padding: clamp(0.6rem, 1.5vw, 1rem) clamp(1rem, 3vw, 3rem);
+            
+            /* Texto adaptable */
+            font-size: clamp(0.75rem, 1.8vw, 1.2rem); 
+            
             cursor: pointer;
             transition: all 0.4s ease;
             font-family: 'Garamond', serif;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             backdrop-filter: blur(5px);
             border-radius: 2px;
+            white-space: nowrap; /* Evita saltos de línea */
+            
+            /* Sin flex-grow para que no se estiren */
+            flex: 0 1 auto;
         }
+        
         .nav button:hover {
             border-color: #ffd700; color: #fff;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); background: rgba(30, 45, 70, 0.8);
         }
+        
         .nav button.active {
             background: rgba(74, 93, 126, 0.3); border-color: #ffd700; color: #ffd700;
             box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.2);
         }
 
         /* Contenedores */
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
+        .container { 
+            width: 95%; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding-bottom: 4rem; 
+            position: relative; 
+            z-index: 2; 
+        }
+        
         .section { display: none; animation: fadeIn 0.8s ease-out; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
@@ -96,28 +144,44 @@
         .content-box {
             background: rgba(13, 17, 23, 0.9);
             border: 1px solid rgba(139, 115, 85, 0.4);
-            padding: 3rem;
+            padding: clamp(1.5rem, 4vw, 3rem);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
             position: relative;
+            border-radius: 4px;
         }
 
         h2 {
-            color: #ffd700; font-size: 2.8rem; margin-bottom: 2rem; text-align: center;
-            font-variant: small-caps; border-bottom: 1px solid #4a5d7e; padding-bottom: 1rem;
+            color: #ffd700; 
+            font-size: clamp(1.8rem, 4vw, 2.8rem); 
+            margin-bottom: 2rem; 
+            text-align: center;
+            font-variant: small-caps; 
+            border-bottom: 1px solid #4a5d7e; 
+            padding-bottom: 1rem;
         }
-        h3 { color: #a89968; font-size: 1.8rem; margin: 2rem 0 1rem 0; display: flex; align-items: center; }
+        
+        h3 { 
+            color: #a89968; 
+            font-size: clamp(1.4rem, 3vw, 1.8rem); 
+            margin: 2rem 0 1rem 0; 
+            display: flex; 
+            align-items: center; 
+        }
+        
         h3::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, #4a5d7e, transparent); margin-left: 20px; }
 
-        /* Estilos de la Línea de Tiempo */
-        .timeline { border-left: 1px solid #4a5d7e; padding-left: 2rem; margin-left: 1rem; }
+        /* Timeline */
+        .timeline { border-left: 1px solid #4a5d7e; padding-left: clamp(1rem, 3vw, 2rem); margin-left: 0.5rem; }
         .timeline-item { margin-bottom: 3rem; position: relative; }
         .timeline-item::before {
-            content: '●'; position: absolute; left: -2.45rem; top: 5px;
+            content: '●'; position: absolute; 
+            left: calc(-1 * (clamp(1rem, 3vw, 2rem) + 5px));
+            top: 5px;
             color: #ffd700; background: #090a0f;
         }
         .timeline-item h4 { color: #fff; font-size: 1.4rem; margin-bottom: 0.5rem; }
 
-        /* Estilos Mapa y Aventureros */
+        /* Mapa */
         .map-frame {
             border: 2px solid #b8860b;
             padding: 5px;
@@ -125,21 +189,22 @@
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
         .map-image {
-            width: 100%;
-            height: auto;
-            display: block;
+            width: 100%; height: auto;
             filter: sepia(20%) contrast(110%);
         }
 
+        /* Tarjetas de Aventureros - SIEMPRE HORIZONTAL */
         .adventurer-card {
             display: flex;
+            flex-direction: row; 
             align-items: flex-start;
             background: rgba(25, 30, 40, 0.6);
             border: 1px solid #4a5d7e;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            padding: clamp(0.8rem, 2vw, 1.5rem);
+            margin-bottom: 1.5rem;
             transition: transform 0.3s ease, border-color 0.3s ease;
-            gap: 2rem;
+            gap: clamp(1rem, 3vw, 2rem);
+            border-radius: 4px;
         }
 
         .adventurer-card:hover {
@@ -149,8 +214,8 @@
         }
 
         .char-portrait {
-            width: 180px;
-            height: 180px;
+            width: clamp(80px, 30%, 180px); /* Tamaño dinámico */
+            aspect-ratio: 1 / 1;
             flex-shrink: 0;
             border: 2px solid #b8860b;
             position: relative;
@@ -158,28 +223,36 @@
             overflow: hidden;
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
+        
         .char-portrait img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover;
         }
 
-        .char-info { flex: 1; }
+        .char-info { flex: 1; min-width: 0; }
+        
         .char-name {
-            color: #ffd700; font-size: 1.8rem; font-variant: small-caps;
-            margin-bottom: 0.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            color: #ffd700; 
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-variant: small-caps;
+            margin-bottom: 0.2rem; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            line-height: 1.1;
         }
+        
         .char-meta {
-            color: #4a90e2; font-style: italic; font-size: 1.1rem;
-            margin-bottom: 1rem; border-bottom: 1px solid rgba(74, 144, 226, 0.3);
-            display: inline-block; padding-bottom: 0.2rem;
-            min-width: 150px; /* Para mantener forma si está vacío */
+            color: #4a90e2; 
+            font-style: italic; 
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            margin-bottom: 0.5rem; 
+            border-bottom: 1px solid rgba(74, 144, 226, 0.3);
+            display: inline-block; 
+            padding-bottom: 0.2rem;
+            min-width: 50px;
         }
-        .char-desc { font-size: 1rem; color: #d4c5a0; }
-
-        @media (max-width: 700px) {
-            .adventurer-card { flex-direction: column; align-items: center; text-align: center; }
-            .nav { flex-direction: column; padding: 1rem; }
+        
+        .char-desc { 
+            font-size: clamp(0.85rem, 2vw, 1rem); 
+            color: #d4c5a0; 
         }
     </style>
 </head>
